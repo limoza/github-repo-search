@@ -1,7 +1,8 @@
+import { SORT_OPTIONS } from '@/src/features/repository-search/constants';
 import type {
   RawSearchParams,
   SearchState,
-} from '@/src/features/repository-search/type';
+} from '@/src/features/repository-search/types';
 
 export const getSingleValue = (
   value?: string | string[],
@@ -20,7 +21,10 @@ export const normalizeSearchParams = (params: RawSearchParams): SearchState => {
   const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
 
   const sortValue = getSingleValue(params.sort);
-  const sort = sortValue === 'stars' ? 'stars' : 'best-match';
+  const sort =
+    sortValue === SORT_OPTIONS.STARS
+      ? SORT_OPTIONS.STARS
+      : SORT_OPTIONS.BEST_MATCH;
 
   return { q, page, sort };
 };

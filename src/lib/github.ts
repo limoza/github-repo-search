@@ -1,10 +1,13 @@
+import { SORT_OPTIONS } from '@/src/features/repository-search/constants';
+import type { SortOption } from '@/src/features/repository-search/constants';
+
 const BASE_URL = 'https://api.github.com/search/repositories';
 
 type SearchReposParams = {
   q: string;
   page: number;
   perPage: number;
-  sort: 'best-match' | 'stars';
+  sort: SortOption;
 };
 
 export async function searchRepositories({
@@ -19,8 +22,8 @@ export async function searchRepositories({
     per_page: String(perPage),
   });
 
-  if (sort === 'stars') {
-    params.set('sort', 'stars');
+  if (sort === SORT_OPTIONS.STARS) {
+    params.set('sort', SORT_OPTIONS.STARS);
   }
 
   const res = await fetch(`${BASE_URL}?${params.toString()}`, {
