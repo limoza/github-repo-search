@@ -2,6 +2,8 @@ import { searchRepositories } from '@/lib/github';
 import { normalizeSearchParams } from '@/features/repository-search/search-params';
 import type { RawSearchParams } from '@/features/repository-search/types';
 import { SearchForm } from '@/components/SearchForm';
+import { RepoList } from '@/components/RepoList';
+import type { GitHubSearchResponse } from '@/types/github';
 
 type SearchParams = Promise<RawSearchParams>;
 
@@ -18,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   const hasQuery = searchState.q !== '';
 
-  const repositoriesData = !hasQuery
+  const repositoriesData: GitHubSearchResponse = !hasQuery
     ? null
     : await searchRepositories({
         q: searchState.q,
@@ -36,9 +38,7 @@ export default async function Page({ searchParams }: PageProps) {
         <p>キーワードを入力して検索してください。</p>
       ) : (
         repositoriesData && (
-          <pre>
-            {JSON.stringify(repositoriesData.items.slice(0, 3), null, 2)}
-          </pre>
+          <RepoList items={repositoriesData.items.slice(0, 10)} />
         )
       )}
     </main>
