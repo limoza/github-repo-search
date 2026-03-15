@@ -1,4 +1,5 @@
 import type { GitHubRepository } from '@/types/github';
+import { formatNumberWithCommas } from '@/utils/numberFormatter';
 
 type Props = {
   items: GitHubRepository[];
@@ -17,7 +18,7 @@ export const RepoList = ({ items }: Props) => {
             {repo.full_name}
           </a>
 
-          <p>⭐️ {repo.stargazers_count}</p>
+          <p>⭐️ {formatNumberWithCommas(repo.stargazers_count)}</p>
 
           {repo.description && <p>{repo.description}</p>}
         </li>
