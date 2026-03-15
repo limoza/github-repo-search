@@ -1,3 +1,5 @@
+import type { SortOption } from '@/src/features/repository-search/constants';
+
 export type RawSearchParams = {
   q?: string | string[];
   page?: string | string[];
@@ -7,5 +9,5 @@ export type RawSearchParams = {
 export type SearchState = {
   q: string;
   page: number;
-  sort: 'best-match' | 'stars';
+  sort: SortOption;
 };
