@@ -1,8 +1,8 @@
-import { SORT_OPTIONS } from '@/src/features/repository-search/constants';
+import { SORT_OPTIONS } from '@/features/repository-search/constants';
 import type {
   RawSearchParams,
   SearchState,
-} from '@/src/features/repository-search/types';
+} from '@/features/repository-search/types';
 
 export const getSingleValue = (
   value?: string | string[],

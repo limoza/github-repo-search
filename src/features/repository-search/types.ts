@@ -1,4 +1,4 @@
-import type { SortOption } from '@/src/features/repository-search/constants';
+import type { SortOption } from '@/features/repository-search/constants';
 
 export type RawSearchParams = {
   q?: string | string[];

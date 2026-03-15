@@ -1,6 +1,6 @@
-import { searchRepositories } from '@/src/lib/github';
-import type { RawSearchParams } from '@/src/features/repository-search/types';
-import { normalizeSearchParams } from '@/src/features/repository-search/search-params';
+import { searchRepositories } from '@/lib/github';
+import { normalizeSearchParams } from '@/features/repository-search/search-params';
+import type { RawSearchParams } from '@/features/repository-search/types';
 
 type SearchParams = Promise<RawSearchParams>;
 

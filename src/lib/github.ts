@@ -1,5 +1,5 @@
-import { SORT_OPTIONS } from '@/src/features/repository-search/constants';
-import type { SortOption } from '@/src/features/repository-search/constants';
+import { SORT_OPTIONS } from '@/features/repository-search/constants';
+import type { SortOption } from '@/features/repository-search/constants';
 
 const BASE_URL = 'https://api.github.com/search/repositories';
 
