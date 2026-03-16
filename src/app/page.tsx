@@ -1,8 +1,9 @@
-import { searchRepositories } from '@/lib/github';
+import { Pagination } from '@/components/Pagination';
+import { RepoList } from '@/components/RepoList';
+import { SearchForm } from '@/components/SearchForm';
 import { normalizeSearchParams } from '@/features/repository-search/search-params';
 import type { RawSearchParams } from '@/features/repository-search/types';
-import { SearchForm } from '@/components/SearchForm';
-import { RepoList } from '@/components/RepoList';
+import { searchRepositories } from '@/lib/github';
 import type { GitHubSearchResponse } from '@/types/github';
 
 type SearchParams = Promise<RawSearchParams>;
@@ -20,7 +21,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   const hasQuery = searchState.q !== '';
 
-  const repositoriesData: GitHubSearchResponse = !hasQuery
+  const repositoriesData: GitHubSearchResponse | null = !hasQuery
     ? null
     : await searchRepositories({
         q: searchState.q,
@@ -28,6 +29,11 @@ export default async function Page({ searchParams }: PageProps) {
         perPage: PER_PAGE,
         sort: searchState.sort,
       });
+
+  const totalPages =
+    hasQuery && repositoriesData
+      ? Math.min(100, Math.ceil(repositoriesData.total_count / PER_PAGE))
+      : 0;
 
   return (
     <main>
@@ -40,6 +46,15 @@ export default async function Page({ searchParams }: PageProps) {
         repositoriesData && (
           <RepoList items={repositoriesData.items.slice(0, 10)} />
         )
+      )}
+
+      {hasQuery && (
+        <Pagination
+          totalPages={totalPages}
+          currentPage={searchState.page}
+          query={searchState.q}
+          sort={searchState.sort}
+        />
       )}
     </main>
   );
