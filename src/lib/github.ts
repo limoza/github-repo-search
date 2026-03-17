@@ -22,8 +22,8 @@ export async function searchRepositories({
     per_page: String(perPage),
   });
 
-  if (sort === SORT_OPTIONS.STARS) {
-    params.set('sort', SORT_OPTIONS.STARS);
+  if (sort !== SORT_OPTIONS.BEST_MATCH) {
+    params.set('sort', sort);
   }
 
   const res = await fetch(`${BASE_URL}?${params.toString()}`, {

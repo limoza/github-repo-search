@@ -1,4 +1,7 @@
-import { SORT_OPTIONS } from '@/features/repository-search/constants';
+import {
+  SORT_OPTIONS,
+  SortOption,
+} from '@/features/repository-search/constants';
 import type {
   RawSearchParams,
   SearchState,
@@ -21,10 +24,13 @@ export const normalizeSearchParams = (params: RawSearchParams): SearchState => {
   const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
 
   const sortValue = getSingleValue(params.sort);
-  const sort =
-    sortValue === SORT_OPTIONS.STARS
-      ? SORT_OPTIONS.STARS
-      : SORT_OPTIONS.BEST_MATCH;
+  const isValidSort = (value: string | undefined): value is SortOption =>
+    value === SORT_OPTIONS.BEST_MATCH ||
+    value === SORT_OPTIONS.STARS ||
+    value === SORT_OPTIONS.FORKS ||
+    value === SORT_OPTIONS.UPDATED;
+
+  const sort = isValidSort(sortValue) ? sortValue : SORT_OPTIONS.BEST_MATCH;
 
   return { q, page, sort };
 };

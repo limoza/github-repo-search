@@ -1,6 +1,7 @@
 import { Pagination } from '@/components/Pagination';
 import { RepoList } from '@/components/RepoList';
 import { SearchForm } from '@/components/SearchForm';
+import { SortSelect } from '@/components/SortSelect';
 import { normalizeSearchParams } from '@/features/repository-search/search-params';
 import type { RawSearchParams } from '@/features/repository-search/types';
 import { searchRepositories } from '@/lib/github';
@@ -39,6 +40,7 @@ export default async function Page({ searchParams }: PageProps) {
     <main>
       <h1>GitHub リポジトリ検索</h1>
       <SearchForm key={searchState.q} initialQuery={searchState.q} />
+      <SortSelect currentSort={searchState.sort} />
 
       {!hasQuery ? (
         <p>キーワードを入力して検索してください。</p>
