@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { SubmitEventHandler } from 'react';
 import { useState } from 'react';
 
-import { QUERY_PARAMS } from '@/features/repository-search/constants';
+import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
 type Props = {
   initialQuery: string;
@@ -19,18 +19,13 @@ export const SearchForm = ({ initialQuery }: Props) => {
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const params = new URLSearchParams(searchParams.toString());
-    const trimmedQuery = query.trim();
+    const nextUrl = buildSearchUrl({
+      currentSearchParams: searchParams.toString(),
+      query,
+      page: 1,
+    });
 
-    if (trimmedQuery === '') {
-      params.delete(QUERY_PARAMS.QUERY);
-      params.delete(QUERY_PARAMS.PAGE);
-    } else {
-      params.set(QUERY_PARAMS.QUERY, trimmedQuery);
-      params.set(QUERY_PARAMS.PAGE, '1');
-    }
-
-    router.push(`/?${params.toString()}`);
+    router.push(nextUrl);
   };
 
   return (
