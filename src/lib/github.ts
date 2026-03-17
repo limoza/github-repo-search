@@ -1,5 +1,8 @@
 import type { SortOption } from '@/features/repository-search/constants';
-import { SORT_OPTIONS } from '@/features/repository-search/constants';
+import {
+  QUERY_PARAMS,
+  SORT_OPTIONS,
+} from '@/features/repository-search/constants';
 
 const BASE_URL = 'https://api.github.com/search/repositories';
 
@@ -22,8 +25,8 @@ export async function searchRepositories({
     per_page: String(perPage),
   });
 
-  if (sort === SORT_OPTIONS.STARS) {
-    params.set('sort', SORT_OPTIONS.STARS);
+  if (sort !== SORT_OPTIONS.BEST_MATCH) {
+    params.set(QUERY_PARAMS.SORT, sort);
   }
 
   const res = await fetch(`${BASE_URL}?${params.toString()}`, {
