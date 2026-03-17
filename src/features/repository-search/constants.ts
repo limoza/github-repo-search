@@ -1,3 +1,9 @@
+export const QUERY_PARAMS = {
+  QUERY: 'q',
+  PAGE: 'page',
+  SORT: 'sort',
+} as const;
+
 export const SORT_OPTIONS = {
   BEST_MATCH: 'best-match',
   STARS: 'stars',

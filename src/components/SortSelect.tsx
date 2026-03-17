@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { ChangeEventHandler } from 'react';
 
 import {
+  QUERY_PARAMS,
   SORT_SELECT_OPTIONS,
   SortOption,
 } from '@/features/repository-search/constants';
@@ -20,8 +21,8 @@ export const SortSelect = ({ currentSort }: Props) => {
     const nextSort = e.target.value as SortOption;
     const params = new URLSearchParams(searchParams.toString());
 
-    params.set('sort', nextSort);
-    params.set('page', '1');
+    params.set(QUERY_PARAMS.SORT, nextSort);
+    params.set(QUERY_PARAMS.PAGE, '1');
 
     router.push(`/?${params.toString()}`);
   };
