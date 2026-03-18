@@ -54,7 +54,7 @@ export const searchRepositories = async ({
 export const getRepositoryDetail = async ({
   owner,
   repo,
-}: GetRepositoryDetailParams): Promise<GitHubRepositoryDetail> => {
+}: GetRepositoryDetailParams): Promise<GitHubRepositoryDetail | null> => {
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}`,
     {
@@ -64,6 +64,10 @@ export const getRepositoryDetail = async ({
       cache: 'no-store',
     },
   );
+
+  if (response.status === 404) {
+    return null;
+  }
 
   if (!response.ok) {
     throw new Error('Failed to fetch repository detail.');

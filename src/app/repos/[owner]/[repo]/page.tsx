@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 import { getRepositoryDetail } from '@/lib/github';
 
@@ -12,6 +13,10 @@ type PageProps = {
 export default async function RepositoryDetailPage({ params }: PageProps) {
   const { owner, repo } = await params;
   const repository = await getRepositoryDetail({ owner, repo });
+
+  if (!repository) {
+    notFound();
+  }
 
   return (
     <main>
