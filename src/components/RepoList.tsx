@@ -1,8 +1,11 @@
-import type { GitHubRepository } from '@/types/github';
+import Link from 'next/link';
+
+import { buildRepositoryDetailPath } from '@/lib/buildRepositoryDetailPath';
+import type { GitHubRepositorySearchItem } from '@/types/github';
 import { formatNumberWithCommas } from '@/utils/numberFormatter';
 
 type Props = {
-  items: GitHubRepository[];
+  items: GitHubRepositorySearchItem[];
 };
 
 export const RepoList = ({ items }: Props) => {
@@ -12,17 +15,24 @@ export const RepoList = ({ items }: Props) => {
 
   return (
     <ul>
-      {items.map((repo) => (
-        <li key={repo.id}>
-          <a href={repo.html_url} target="_blank" rel="noreferrer">
-            {repo.full_name}
-          </a>
+      {items.map((repo) => {
+        if (repo.owner == null) return null;
 
-          <p>⭐️ {formatNumberWithCommas(repo.stargazers_count)}</p>
+        const detailPath = buildRepositoryDetailPath({
+          owner: repo.owner.login,
+          repo: repo.name,
+        });
 
-          {repo.description && <p>{repo.description}</p>}
-        </li>
-      ))}
+        return (
+          <li key={repo.id}>
+            <Link href={detailPath}>{repo.full_name}</Link>
+
+            <p>⭐️ {formatNumberWithCommas(repo.stargazers_count)}</p>
+
+            {repo.description && <p>{repo.description}</p>}
+          </li>
+        );
+      })}
     </ul>
   );
 };

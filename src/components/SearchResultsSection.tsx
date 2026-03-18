@@ -2,7 +2,7 @@ import { Pagination } from '@/components/Pagination';
 import { RepoList } from '@/components/RepoList';
 import type { SearchState } from '@/features/repository-search/types';
 import { searchRepositories } from '@/lib/github';
-import type { GitHubSearchResponse } from '@/types/github';
+import type { GitHubRepositorySearchResponse } from '@/types/github';
 
 type Props = {
   searchState: SearchState;
@@ -21,7 +21,7 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
     );
   }
 
-  const repositoriesData: GitHubSearchResponse | null =
+  const repositoriesData: GitHubRepositorySearchResponse | null =
     await searchRepositories({
       q: searchState.q,
       page: searchState.page,
