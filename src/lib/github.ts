@@ -3,6 +3,10 @@ import {
   QUERY_PARAMS,
   SORT_OPTIONS,
 } from '@/features/repository-search/constants';
+import type {
+  GitHubRepositoryDetail,
+  GitHubRepositorySearchResponse,
+} from '@/types/github';
 
 const BASE_URL = 'https://api.github.com/search/repositories';
 
@@ -13,12 +17,17 @@ type SearchReposParams = {
   sort: SortOption;
 };
 
-export async function searchRepositories({
+type GetRepositoryDetailParams = {
+  owner: string;
+  repo: string;
+};
+
+export const searchRepositories = async ({
   q,
   page,
   perPage,
   sort,
-}: SearchReposParams) {
+}: SearchReposParams): Promise<GitHubRepositorySearchResponse> => {
   const params = new URLSearchParams({
     q,
     page: String(page),
@@ -40,4 +49,25 @@ export async function searchRepositories({
   }
 
   return res.json();
-}
+};
+
+export const getRepositoryDetail = async ({
+  owner,
+  repo,
+}: GetRepositoryDetailParams): Promise<GitHubRepositoryDetail> => {
+  const response = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}`,
+    {
+      headers: {
+        Accept: 'application/vnd.github+json',
+      },
+      cache: 'no-store',
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch repository detail.');
+  }
+
+  return response.json();
+};

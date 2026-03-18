@@ -1,12 +1,10 @@
-export type GitHubRepository = {
-  id: number;
-  full_name: string;
-  html_url: string;
-  stargazers_count: number;
-  description: string | null;
-};
+import type { Endpoints } from '@octokit/types';
 
-export type GitHubSearchResponse = {
-  total_count: number;
-  items: GitHubRepository[];
-};
+export type GitHubRepositorySearchResponse =
+  Endpoints['GET /search/repositories']['response']['data'];
+
+export type GitHubRepositorySearchItem =
+  GitHubRepositorySearchResponse['items'][number];
+
+export type GitHubRepositoryDetail =
+  Endpoints['GET /repos/{owner}/{repo}']['response']['data'];
