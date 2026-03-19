@@ -3,14 +3,13 @@ import {
   QUERY_PARAMS,
   SORT_OPTIONS,
 } from '@/features/repository-search/constants';
+import { githubFetch } from '@/lib/githubClient';
 import type {
   GitHubRepositoryDetail,
   GitHubRepositorySearchResponse,
 } from '@/types/github';
 
-const BASE_URL = 'https://api.github.com/search/repositories';
-
-type SearchReposParams = {
+type SearchRepositoriesParams = {
   q: string;
   page: number;
   perPage: number;
@@ -27,7 +26,7 @@ export const searchRepositories = async ({
   page,
   perPage,
   sort,
-}: SearchReposParams): Promise<GitHubRepositorySearchResponse> => {
+}: SearchRepositoriesParams): Promise<GitHubRepositorySearchResponse> => {
   const params = new URLSearchParams({
     q,
     page: String(page),
@@ -38,32 +37,24 @@ export const searchRepositories = async ({
     params.set(QUERY_PARAMS.SORT, sort);
   }
 
-  const res = await fetch(`${BASE_URL}?${params.toString()}`, {
-    next: {
-      revalidate: 60,
-    },
-  });
+  const response = await githubFetch(
+    `/search/repositories?${params.toString()}`,
+  );
 
-  if (!res.ok) {
+  if (!response.ok) {
     throw new Error('Failed to fetch repositories');
   }
 
-  return res.json();
+  return response.json();
 };
 
 export const getRepositoryDetail = async ({
   owner,
   repo,
 }: GetRepositoryDetailParams): Promise<GitHubRepositoryDetail | null> => {
-  const response = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}`,
-    {
-      headers: {
-        Accept: 'application/vnd.github+json',
-      },
-      cache: 'no-store',
-    },
-  );
+  const encodedOwner = encodeURIComponent(owner);
+  const encodedRepo = encodeURIComponent(repo);
+  const response = await githubFetch(`/repos/${encodedOwner}/${encodedRepo}`);
 
   if (response.status === 404) {
     return null;
