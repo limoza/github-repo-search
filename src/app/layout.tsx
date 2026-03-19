@@ -1,7 +1,20 @@
-export default function Layout({ children }: { children: React.ReactNode }) {
+import type { ReactNode } from 'react';
+
+import { AppHeader } from '@/components/AppHeader';
+
+type RootLayoutProps = {
+  children: ReactNode;
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html>
-      <body>{children}</body>
+    <html lang="ja">
+      <body>
+        <div>
+          <AppHeader />
+          <div>{children}</div>
+        </div>
+      </body>
     </html>
   );
 }
