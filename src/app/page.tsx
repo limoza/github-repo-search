@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <main>
-      <h1>GitHub リポジトリ検索</h1>
+      <h1>GitHubリポジトリを検索</h1>
       <SearchForm key={q} initialQuery={q} />
       <SortSelect currentSort={sort} />
       <Suspense
