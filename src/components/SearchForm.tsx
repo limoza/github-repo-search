@@ -1,17 +1,16 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import type { SubmitEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 
 import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
-type Props = {
+type SearchFormProps = {
   initialQuery: string;
 };
 
-const SEARCH_DEBOUNCE_MS = 1000;
-
-export const SearchForm = ({ initialQuery }: Props) => {
+export const SearchForm = ({ initialQuery }: SearchFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -21,7 +20,9 @@ export const SearchForm = ({ initialQuery }: Props) => {
     setInputValue(initialQuery);
   }, [initialQuery]);
 
-  useEffect(() => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+
     const trimmedInputValue = inputValue.trim();
     const trimmedInitialQuery = initialQuery.trim();
 
@@ -29,26 +30,18 @@ export const SearchForm = ({ initialQuery }: Props) => {
       return;
     }
 
-    const timeoutId = window.setTimeout(() => {
-      const nextUrl = buildSearchUrl({
-        currentSearchParams: searchParams.toString(),
-        query: trimmedInputValue,
-        page: 1,
-      });
+    const nextUrl = buildSearchUrl({
+      currentSearchParams: searchParams.toString(),
+      query: trimmedInputValue,
+      page: 1,
+    });
 
-      router.push(nextUrl);
-    }, SEARCH_DEBOUNCE_MS);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [inputValue, initialQuery, router, searchParams]);
+    router.push(nextUrl);
+  };
 
   return (
-    <form role="search">
-      <label htmlFor="repo-search-input" className="sr-only">
-        リポジトリ名で検索
-      </label>
+    <form onSubmit={handleSubmit} role="search">
+      <label htmlFor="repo-search-input">リポジトリ名で検索</label>
 
       <input
         id="repo-search-input"
@@ -57,6 +50,8 @@ export const SearchForm = ({ initialQuery }: Props) => {
         onChange={(event) => setInputValue(event.target.value)}
         placeholder="リポジトリ名で検索"
       />
+
+      <button type="submit">検索</button>
     </form>
   );
 };
