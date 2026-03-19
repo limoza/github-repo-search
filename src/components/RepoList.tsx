@@ -9,9 +9,7 @@ type Props = {
 };
 
 export const RepoList = ({ items }: Props) => {
-  if (items.length === 0) {
-    return <p>該当するリポジトリが見つかりませんでした。</p>;
-  }
+  if (items.length === 0) return;
 
   return (
     <ul>
