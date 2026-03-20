@@ -1,70 +1,90 @@
+import { redirect } from 'next/navigation';
 import { Pagination } from '@/components/Pagination';
 import { RepoList } from '@/components/RepoList';
 import type { SearchState } from '@/features/repository-search/types';
 import { searchRepositories } from '@/lib/github';
 import type { GitHubRepositorySearchResponse } from '@/types/github';
+import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
 type Props = {
   searchState: SearchState;
 };
 
 const PER_PAGE = 10;
+const MAX_SEARCH_RESULT_PAGES = 100;
 
 export const SearchResultsSection = async ({ searchState }: Props) => {
-  const hasQuery = searchState.q !== '';
+  if (!searchState.q) {
+    return (
+      <section>
+        <p>キーワードを入力して検索してください。</p>
+      </section>
+    );
+  }
 
-  const repositoriesData: GitHubRepositorySearchResponse | null = !hasQuery
-    ? null
-    : await searchRepositories({
-        q: searchState.q,
-        page: searchState.page,
-        perPage: PER_PAGE,
-        sort: searchState.sort,
-      });
+  const safePage = Math.min(
+    Math.max(searchState.page, 1),
+    MAX_SEARCH_RESULT_PAGES,
+  );
 
-  const totalCount = repositoriesData?.total_count ?? 0;
+  const repositoriesData: GitHubRepositorySearchResponse =
+    await searchRepositories({
+      q: searchState.q,
+      page: safePage,
+      perPage: PER_PAGE,
+      sort: searchState.sort,
+    });
 
-  const startItemNumber =
-    totalCount === 0 ? 0 : (searchState.page - 1) * PER_PAGE + 1;
+  const totalCount = repositoriesData.total_count;
+  const totalPages = Math.min(
+    MAX_SEARCH_RESULT_PAGES,
+    Math.ceil(totalCount / PER_PAGE),
+  );
 
-  const endItemNumber =
-    totalCount === 0 ? 0 : Math.min(searchState.page * PER_PAGE, totalCount);
+  const hasAvailablePages = totalPages > 0;
+  const isPageOutOfRange = searchState.page > totalPages;
 
-  const totalPages =
-    hasQuery && repositoriesData
-      ? Math.min(100, Math.ceil(totalCount / PER_PAGE))
-      : 0;
+  if (hasAvailablePages && isPageOutOfRange) {
+    const redirectUrl = buildSearchUrl({
+      currentSearchParams: '',
+      query: searchState.q,
+      page: totalPages,
+      sort: searchState.sort,
+    });
+
+    redirect(redirectUrl);
+  }
+
+  const startItemNumber = !hasAvailablePages
+    ? 0
+    : (safePage - 1) * PER_PAGE + 1;
+
+  const endItemNumber = !hasAvailablePages
+    ? 0
+    : Math.min(safePage * PER_PAGE, totalCount);
 
   return (
     <section>
-      {!hasQuery ? (
-        <p>キーワードを入力して検索してください。</p>
-      ) : (
-        repositoriesData && (
-          <>
-            <div>
-              <h2>「{searchState.q}」の検索結果</h2>
-              {totalCount === 0 ? (
-                <p>該当するリポジトリが見つかりませんでした。</p>
-              ) : (
-                <p>
-                  {totalCount.toLocaleString()}件中 {startItemNumber}–
-                  {endItemNumber}件を表示
-                </p>
-              )}
-            </div>
+      <div>
+        <h2>「{searchState.q}」の検索結果</h2>
+        {!hasAvailablePages ? (
+          <p>該当するリポジトリが見つかりませんでした。</p>
+        ) : (
+          <p>
+            {totalCount.toLocaleString()}件中 {startItemNumber}–{endItemNumber}
+            件を表示
+          </p>
+        )}
+      </div>
 
-            <RepoList items={repositoriesData.items} />
+      <RepoList items={repositoriesData.items} />
 
-            <Pagination
-              totalPages={totalPages}
-              currentPage={searchState.page}
-              query={searchState.q}
-              sort={searchState.sort}
-            />
-          </>
-        )
-      )}
+      <Pagination
+        totalPages={totalPages}
+        currentPage={safePage}
+        query={searchState.q}
+        sort={searchState.sort}
+      />
     </section>
   );
 };
