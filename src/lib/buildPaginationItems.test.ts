@@ -77,7 +77,7 @@ describe('buildPaginationItems', () => {
     ]);
   });
 
-  it('左側で省略されるページがない場合は省略記号を出さない', () => {
+  it('右側で省略されるページがない場合は省略記号を出さない', () => {
     expect(buildPaginationItems({ currentPage: 15, totalPages: 20 })).toEqual([
       { type: 'page', value: 1 },
       { type: 'ellipsis' },
