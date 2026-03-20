@@ -23,7 +23,7 @@ describe('buildSearchUrl', () => {
     ).toBe('/?q=react');
   });
 
-  it('空文字のqueryを渡すとqとpageを削除する', () => {
+  it('空白のみのqueryを渡すとqとpageを削除する', () => {
     expect(
       buildSearchUrl({
         currentSearchParams: 'q=react&page=3&sort=stars',
