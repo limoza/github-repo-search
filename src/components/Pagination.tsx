@@ -1,21 +1,80 @@
-type Props = {
+import Link from 'next/link';
+
+import { buildPaginationItems } from '@/lib/buildPaginationItems';
+import { buildSearchUrl } from '@/lib/buildSearchUrl';
+import type { SortOption } from '@/features/repository-search/constants';
+
+type PaginationProps = {
   currentPage: number;
   totalPages: number;
   query: string;
-  sort: string;
+  sort: SortOption;
 };
 
-export const Pagination = ({ currentPage, totalPages, query, sort }: Props) => (
-  <nav>
-    {Array.from({ length: totalPages }, (_, i) => {
-      const page = i + 1;
+export const Pagination = ({
+  currentPage,
+  totalPages,
+  query,
+  sort,
+}: PaginationProps) => {
+  if (totalPages <= 1) {
+    return null;
+  }
 
-      return (
-        <a key={page} href={`/?q=${query}&page=${page}&sort=${sort}`}>
-          {page}
-          {currentPage === page && '←'}
-        </a>
-      );
-    })}
-  </nav>
-);
+  const paginationItems = buildPaginationItems({
+    currentPage,
+    totalPages,
+  });
+
+  const buildPageHref = (page: number) => {
+    return buildSearchUrl({
+      currentSearchParams: '',
+      query,
+      page,
+      sort,
+    });
+  };
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
+  return (
+    <nav aria-label="ページネーション">
+      <ul>
+        {!isFirstPage && (
+          <li>
+            <Link href={buildPageHref(currentPage - 1)}>戻る</Link>
+          </li>
+        )}
+
+        {paginationItems.map((item, index) => {
+          if (item.type === 'ellipsis') {
+            return (
+              <li key={`ellipsis-${index}`}>
+                <span>…</span>
+              </li>
+            );
+          }
+
+          const isCurrentPage = item.value === currentPage;
+
+          return (
+            <li key={item.value}>
+              {isCurrentPage ? (
+                <span aria-current="page">{item.value}</span>
+              ) : (
+                <Link href={buildPageHref(item.value)}>{item.value}</Link>
+              )}
+            </li>
+          );
+        })}
+
+        {!isLastPage && (
+          <li>
+            <Link href={buildPageHref(currentPage + 1)}>進む</Link>
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
