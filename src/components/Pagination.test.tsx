@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { vi } from 'vitest';
 
 import { Pagination } from './Pagination';
@@ -9,7 +10,7 @@ vi.mock('next/link', () => ({
     children,
   }: {
     href: string;
-    children: React.ReactNode;
+    children: ReactNode;
   }) => <a href={href}>{children}</a>,
 }));
 
