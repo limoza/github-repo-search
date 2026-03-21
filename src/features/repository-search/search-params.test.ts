@@ -87,7 +87,7 @@ describe('normalizeSearchParams', () => {
     SORT_OPTIONS.STARS,
     SORT_OPTIONS.FORKS,
     SORT_OPTIONS.UPDATED,
-  ])('sortが有効値(%s)ならそのまま返す', sortOption => {
+  ])('sortが有効値(%s)ならそのまま返す', (sortOption) => {
     expect(
       normalizeSearchParams({
         sort: sortOption,
