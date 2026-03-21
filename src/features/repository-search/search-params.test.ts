@@ -82,15 +82,20 @@ describe('normalizeSearchParams', () => {
     });
   });
 
-  it('sortが有効値ならそのまま返す', () => {
+  it.each([
+    SORT_OPTIONS.BEST_MATCH,
+    SORT_OPTIONS.STARS,
+    SORT_OPTIONS.FORKS,
+    SORT_OPTIONS.UPDATED,
+  ])('sortが有効値(%s)ならそのまま返す', sortOption => {
     expect(
       normalizeSearchParams({
-        sort: SORT_OPTIONS.STARS,
+        sort: sortOption,
       }),
     ).toEqual({
       q: '',
       page: 1,
-      sort: SORT_OPTIONS.STARS,
+      sort: sortOption,
     });
   });
 
