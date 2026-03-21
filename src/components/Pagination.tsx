@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
+import type { SortOption } from '@/features/repository-search/constants';
 import { buildPaginationItems } from '@/lib/buildPaginationItems';
 import { buildSearchUrl } from '@/lib/buildSearchUrl';
-import type { SortOption } from '@/features/repository-search/constants';
 
 type PaginationProps = {
   currentPage: number;

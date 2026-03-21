@@ -1,10 +1,11 @@
 import { redirect } from 'next/navigation';
+
 import { Pagination } from '@/components/Pagination';
 import { RepoList } from '@/components/RepoList';
 import type { SearchState } from '@/features/repository-search/types';
+import { buildSearchUrl } from '@/lib/buildSearchUrl';
 import { searchRepositories } from '@/lib/github';
 import type { GitHubRepositorySearchResponse } from '@/types/github';
-import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
 type Props = {
   searchState: SearchState;

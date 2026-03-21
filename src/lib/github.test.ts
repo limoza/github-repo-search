@@ -1,7 +1,7 @@
 import { SORT_OPTIONS } from '@/features/repository-search/constants';
+import { githubFetch } from '@/lib/githubClient';
 
 import { getRepositoryDetail, searchRepositories } from './github';
-import { githubFetch } from '@/lib/githubClient';
 
 vi.mock('@/lib/githubClient', () => ({
   githubFetch: vi.fn(),
