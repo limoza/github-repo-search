@@ -1,11 +1,10 @@
-import { Geist } from "next/font/google";
+import { Geist } from 'next/font/google';
 import type { ReactNode } from 'react';
 
 import { AppHeader } from '@/components/AppHeader';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -13,7 +12,7 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="ja" className={cn("font-sans", geist.variable)}>
+    <html lang="ja" className={cn('font-sans', geist.variable)}>
       <body>
         <div>
           <AppHeader />
