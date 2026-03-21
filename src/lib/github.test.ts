@@ -169,4 +169,15 @@ describe('getRepositoryDetail', () => {
       }),
     ).rejects.toThrow('Failed to fetch repository detail.');
   });
+
+  it('githubFetchが5xxで失敗した場合はその例外をそのまま伝播する', async () => {
+    mockedGithubFetch.mockRejectedValue(new Error('GitHub API server error.'));
+
+    await expect(
+      getRepositoryDetail({
+        owner: 'foo',
+        repo: 'bar',
+      }),
+    ).rejects.toThrow('GitHub API server error.');
+  });
 });
