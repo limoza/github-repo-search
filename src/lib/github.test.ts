@@ -1,9 +1,9 @@
 import { SORT_OPTIONS } from '@/features/repository-search/constants';
 
 import { getRepositoryDetail, searchRepositories } from './github';
-import { githubFetch } from './githubClient';
+import { githubFetch } from '@/lib/githubClient';
 
-vi.mock('./githubClient', () => ({
+vi.mock('@/lib/githubClient', () => ({
   githubFetch: vi.fn(),
 }));
 
