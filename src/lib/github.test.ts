@@ -159,7 +159,7 @@ describe('getRepositoryDetail', () => {
   it('404以外の失敗時はerrorをthrowする', async () => {
     mockedGithubFetch.mockResolvedValue({
       ok: false,
-      status: 500,
+      status: 403,
     } as Response);
 
     await expect(
