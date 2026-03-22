@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { SubmitEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
 type SearchFormProps = {
@@ -43,7 +45,7 @@ export const SearchForm = ({ initialQuery }: SearchFormProps) => {
     <form onSubmit={handleSubmit} role="search">
       <label htmlFor="repo-search-input">リポジトリ名で検索</label>
 
-      <input
+      <Input
         id="repo-search-input"
         type="search"
         value={inputValue}
@@ -51,7 +53,7 @@ export const SearchForm = ({ initialQuery }: SearchFormProps) => {
         placeholder="リポジトリ名で検索"
       />
 
-      <button type="submit">検索</button>
+      <Button type="submit">検索</Button>
     </form>
   );
 };
