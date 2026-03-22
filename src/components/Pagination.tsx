@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { Button } from '@/components/ui/button';
 import type { SortOption } from '@/features/repository-search/constants';
 import { buildPaginationItems } from '@/lib/buildPaginationItems';
 import { buildSearchUrl } from '@/lib/buildSearchUrl';
@@ -43,7 +44,9 @@ export const Pagination = ({
       <ul>
         {!isFirstPage && (
           <li>
-            <Link href={buildPageHref(currentPage - 1)}>戻る</Link>
+            <Button asChild variant="outline">
+              <Link href={buildPageHref(currentPage - 1)}>戻る</Link>
+            </Button>
           </li>
         )}
 
@@ -63,7 +66,9 @@ export const Pagination = ({
               {isCurrentPage ? (
                 <span aria-current="page">{item.value}</span>
               ) : (
-                <Link href={buildPageHref(item.value)}>{item.value}</Link>
+                <Button asChild variant="outline">
+                  <Link href={buildPageHref(item.value)}>{item.value}</Link>
+                </Button>
               )}
             </li>
           );
@@ -71,7 +76,9 @@ export const Pagination = ({
 
         {!isLastPage && (
           <li>
-            <Link href={buildPageHref(currentPage + 1)}>進む</Link>
+            <Button asChild variant="outline">
+              <Link href={buildPageHref(currentPage + 1)}>進む</Link>
+            </Button>
           </li>
         )}
       </ul>
