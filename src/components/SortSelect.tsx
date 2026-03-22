@@ -1,11 +1,17 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import type { ChangeEventHandler } from 'react';
 
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   SORT_SELECT_OPTIONS,
-  SortOption,
+  type SortOption,
 } from '@/features/repository-search/constants';
 import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
@@ -17,12 +23,10 @@ export const SortSelect = ({ currentSort }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const nextSort = e.target.value as SortOption;
-
+  const handleValueChange = (nextSort: string) => {
     const nextUrl = buildSearchUrl({
       currentSearchParams: searchParams.toString(),
-      sort: nextSort,
+      sort: nextSort as SortOption,
       page: 1,
     });
 
@@ -30,15 +34,20 @@ export const SortSelect = ({ currentSort }: Props) => {
   };
 
   return (
-    <label>
-      並び順
-      <select value={currentSort} onChange={handleChange}>
-        {SORT_SELECT_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div>
+      <label htmlFor="sort-select">並び順</label>
+      <Select value={currentSort} onValueChange={handleValueChange}>
+        <SelectTrigger id="sort-select">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {SORT_SELECT_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 };
