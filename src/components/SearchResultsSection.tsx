@@ -17,8 +17,10 @@ const MAX_SEARCH_RESULT_PAGES = 100;
 export const SearchResultsSection = async ({ searchState }: Props) => {
   if (!searchState.q) {
     return (
-      <section>
-        <p>キーワードを入力して検索してください。</p>
+      <section className="space-y-2">
+        <p className="text-sm text-muted-foreground mt-3">
+          キーワードを入力して検索してください。
+        </p>
       </section>
     );
   }
@@ -65,27 +67,42 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
     : Math.min(safePage * PER_PAGE, totalCount);
 
   return (
-    <section>
-      <div>
-        <h2>「{searchState.q}」の検索結果</h2>
-        {!hasAvailablePages ? (
-          <p>該当するリポジトリが見つかりませんでした。</p>
-        ) : (
-          <p>
+    <section className="space-y-6 mt-3">
+      <div className="border-b pb-3">
+        <h2 className="text-xl tracking-tight text-foreground">
+          <span className="font-bold">{searchState.q}</span>
+          <span className="text-base ml-1">の検索結果</span>
+        </h2>
+
+        {hasAvailablePages && (
+          <p className="mt-0.5 text-sm text-muted-foreground">
             {totalCount.toLocaleString()}件中 {startItemNumber}–{endItemNumber}
             件を表示
           </p>
         )}
       </div>
 
-      <RepoList items={repositoriesData.items} />
+      {!hasAvailablePages ? (
+        <div>
+          <p className="font-medium text-foreground">
+            該当するリポジトリが見つかりませんでした。
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            キーワードを短くする、別の単語にする、表記を変えるなどして再度お試しください。
+          </p>
+        </div>
+      ) : (
+        <>
+          <RepoList items={repositoriesData.items} />
 
-      <Pagination
-        totalPages={totalPages}
-        currentPage={safePage}
-        query={searchState.q}
-        sort={searchState.sort}
-      />
+          <Pagination
+            totalPages={totalPages}
+            currentPage={safePage}
+            query={searchState.q}
+            sort={searchState.sort}
+          />
+        </>
+      )}
     </section>
   );
 };
