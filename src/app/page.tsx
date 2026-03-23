@@ -24,7 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
         GitHubリポジトリを検索
       </h1>
       <SearchForm key={`${q}-${sort}`} initialQuery={q} currentSort={sort} />
-      <SortSelect currentSort={sort} />
+      {q && <SortSelect currentSort={sort} />}
       <Suspense
         key={`${q}-${page}-${sort}`}
         fallback={<SearchResultsLoading />}
