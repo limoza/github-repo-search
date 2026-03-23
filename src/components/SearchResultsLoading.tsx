@@ -11,7 +11,7 @@ const LOADING_ITEMS = 4;
 
 export const SearchResultsLoading = () => {
   return (
-    <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2 mt-3">
       {Array.from({ length: LOADING_ITEMS }).map((_, index) => (
         <li key={index}>
           <Card className="flex h-full flex-col">
