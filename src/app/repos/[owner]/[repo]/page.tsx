@@ -1,4 +1,5 @@
 import { CircleDot, ExternalLink, Eye, GitFork, Star } from 'lucide-react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -13,6 +14,23 @@ type PageProps = {
     repo: string;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { owner, repo } = await params;
+  const repository = await getRepositoryDetail({ owner, repo });
+
+  return {
+    title: repository
+      ? `${repository.full_name} | GitHub Repo Search`
+      : 'Repository not found | GitHub Repo Search',
+    robots: {
+      index: false,
+      follow: true,
+    },
+  };
+}
 
 export default async function RepositoryDetailPage({ params }: PageProps) {
   const { owner, repo } = await params;
