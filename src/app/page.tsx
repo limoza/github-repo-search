@@ -15,7 +15,7 @@ type PageProps = {
 };
 
 export const metadata: Metadata = {
-  title: 'GitHub Repo Search',
+  title: '検索 | GitHub Repo Search',
   description: 'GitHubリポジトリを検索できるアプリです。',
 };
 
