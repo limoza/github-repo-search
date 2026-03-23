@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { SearchForm } from '@/components/SearchForm';
@@ -11,6 +12,11 @@ type SearchParams = Promise<RawSearchParams>;
 
 type PageProps = {
   searchParams: SearchParams;
+};
+
+export const metadata: Metadata = {
+  title: 'GitHub Repo Search',
+  description: 'GitHubリポジトリを検索できるアプリです。',
 };
 
 export default async function Page({ searchParams }: PageProps) {

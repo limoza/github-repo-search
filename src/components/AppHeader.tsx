@@ -8,7 +8,7 @@ export const AppHeader = () => {
           href="/"
           className="text-base font-semibold tracking-tight text-primary-foreground"
         >
-          GitHub リポジトリ検索app
+          GitHub Repo Search
         </Link>
       </div>
     </header>
