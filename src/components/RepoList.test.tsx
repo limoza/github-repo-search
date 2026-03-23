@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import type { ImgHTMLAttributes, ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
+import type { GitHubRepositorySearchItem } from '@/types/github';
+
 import { RepoList } from './RepoList';
 
 vi.mock('next/link', () => ({
@@ -32,7 +34,7 @@ vi.mock('@/utils/formatRelativeUpdatedAt', () => ({
 }));
 
 describe('RepoList', () => {
-  const items = [
+  const items: GitHubRepositorySearchItem[] = [
     {
       id: 1,
       name: 'react',
@@ -59,10 +61,10 @@ describe('RepoList', () => {
         avatar_url: 'https://example.com/vercel.png',
       },
     },
-  ];
+  ] as GitHubRepositorySearchItem[];
 
   it('itemsの件数ぶん表示する', () => {
-    render(<RepoList items={items as never} />);
+    render(<RepoList items={items} />);
 
     expect(
       screen.getByRole('link', { name: /facebook\/react/i }),
@@ -73,7 +75,7 @@ describe('RepoList', () => {
   });
 
   it('詳細ページへのリンクを表示する', () => {
-    render(<RepoList items={items as never} />);
+    render(<RepoList items={items} />);
 
     expect(
       screen.getByRole('link', { name: /facebook\/react/i }),
@@ -84,7 +86,7 @@ describe('RepoList', () => {
   });
 
   it('descriptionがある場合だけ表示する', () => {
-    render(<RepoList items={items as never} />);
+    render(<RepoList items={items} />);
 
     expect(
       screen.getByText('A JavaScript library for building user interfaces'),
@@ -92,7 +94,7 @@ describe('RepoList', () => {
   });
 
   it('starsとforksを表示する', () => {
-    render(<RepoList items={items as never} />);
+    render(<RepoList items={items} />);
 
     expect(screen.getByText('235,000')).toBeInTheDocument();
     expect(screen.getByText('48,500')).toBeInTheDocument();
@@ -101,7 +103,7 @@ describe('RepoList', () => {
   });
 
   it('更新日時を表示する', () => {
-    render(<RepoList items={items as never} />);
+    render(<RepoList items={items} />);
 
     expect(screen.getAllByText('3日前')).toHaveLength(2);
   });
