@@ -40,12 +40,17 @@ export const Pagination = ({
   const isLastPage = currentPage === totalPages;
 
   return (
-    <nav aria-label="ページネーション">
-      <ul>
+    <nav aria-label="ページネーション" className="pt-2">
+      <ul className="flex flex-wrap items-center justify-center gap-2">
         {!isFirstPage && (
           <li>
-            <Button asChild variant="outline">
-              <Link href={buildPageHref(currentPage - 1)}>戻る</Link>
+            <Button asChild variant="outline" className="h-10 min-w-10">
+              <Link
+                href={buildPageHref(currentPage - 1)}
+                aria-label="前のページへ"
+              >
+                <span aria-hidden="true">&lt;</span>
+              </Link>
             </Button>
           </li>
         )}
@@ -54,7 +59,9 @@ export const Pagination = ({
           if (item.type === 'ellipsis') {
             return (
               <li key={`ellipsis-${index}`}>
-                <span>…</span>
+                <span className="flex h-10 min-w-10 items-center justify-center text-sm text-muted-foreground">
+                  …
+                </span>
               </li>
             );
           }
@@ -64,9 +71,18 @@ export const Pagination = ({
           return (
             <li key={item.value}>
               {isCurrentPage ? (
-                <span aria-current="page">{item.value}</span>
+                <span
+                  aria-current="page"
+                  className="inline-flex h-10 min-w-10 items-center justify-center rounded-md border border-primary bg-primary px-3 text-sm font-medium text-primary-foreground"
+                >
+                  {item.value}
+                </span>
               ) : (
-                <Button asChild variant="outline">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-10 min-w-10 px-3"
+                >
                   <Link href={buildPageHref(item.value)}>{item.value}</Link>
                 </Button>
               )}
@@ -76,8 +92,13 @@ export const Pagination = ({
 
         {!isLastPage && (
           <li>
-            <Button asChild variant="outline">
-              <Link href={buildPageHref(currentPage + 1)}>進む</Link>
+            <Button asChild variant="outline" className="h-10 min-w-10">
+              <Link
+                href={buildPageHref(currentPage + 1)}
+                aria-label="次のページへ"
+              >
+                <span aria-hidden="true">&gt;</span>
+              </Link>
             </Button>
           </li>
         )}

@@ -19,7 +19,7 @@ export default async function RepositoryDetailPage({ params }: PageProps) {
   }
 
   return (
-    <main>
+    <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <h1>{repository.full_name}</h1>
 
       <Image

@@ -34,20 +34,28 @@ export const SortSelect = ({ currentSort }: Props) => {
   };
 
   return (
-    <div>
-      <label htmlFor="sort-select">並び順</label>
-      <Select value={currentSort} onValueChange={handleValueChange}>
-        <SelectTrigger id="sort-select">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {SORT_SELECT_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex justify-end mt-8">
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor="sort-select"
+          className="text-sm font-medium text-foreground"
+        >
+          並び順
+        </label>
+
+        <Select value={currentSort} onValueChange={handleValueChange}>
+          <SelectTrigger id="sort-select" className="h-11 w-44">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {SORT_SELECT_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 };

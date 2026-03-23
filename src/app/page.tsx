@@ -19,8 +19,10 @@ export default async function Page({ searchParams }: PageProps) {
   const { q, sort, page } = searchState;
 
   return (
-    <main>
-      <h1>GitHubリポジトリを検索</h1>
+    <main className="mx-auto w-full max-w-5xl px-4 pb-13 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold tracking-tight text-foreground mt-12">
+        GitHubリポジトリを検索
+      </h1>
       <SearchForm key={q} initialQuery={q} />
       <SortSelect currentSort={sort} />
       <Suspense
