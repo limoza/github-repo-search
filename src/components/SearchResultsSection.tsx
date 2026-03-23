@@ -70,7 +70,7 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
     <section className="space-y-6 mt-3">
       <div className="border-b pb-3">
         <h2 className="text-xl tracking-tight text-foreground">
-          <span className="font-bold font-lg">{searchState.q}</span>
+          <span className="font-bold">{searchState.q}</span>
           <span className="text-base ml-1">の検索結果</span>
         </h2>
 
