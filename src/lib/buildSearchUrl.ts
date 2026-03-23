@@ -35,11 +35,7 @@ export const buildSearchUrl = ({
   }
 
   if (sort !== undefined) {
-    if (sort === SORT_OPTIONS.BEST_MATCH) {
-      params.delete(QUERY_PARAMS.SORT);
-    } else {
-      params.set(QUERY_PARAMS.SORT, sort);
-    }
+    params.set(QUERY_PARAMS.SORT, sort);
   }
 
   const queryString = params.toString();

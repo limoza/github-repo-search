@@ -94,27 +94,7 @@ describe('Pagination', () => {
     expect(screen.queryByRole('link', { name: '5' })).not.toBeInTheDocument();
   });
 
-  it('best-matchではsortクエリを含まないリンクを出す', () => {
-    render(
-      <Pagination
-        currentPage={5}
-        totalPages={10}
-        query="react"
-        sort="best-match"
-      />,
-    );
-
-    expect(screen.getByRole('link', { name: '戻る' })).toHaveAttribute(
-      'href',
-      '/?q=react&page=4',
-    );
-    expect(screen.getByRole('link', { name: '進む' })).toHaveAttribute(
-      'href',
-      '/?q=react&page=6',
-    );
-  });
-
-  it('best-match以外ではsortクエリを含むリンクを出す', () => {
+  it('sortクエリを含むリンクを出す', () => {
     render(
       <Pagination currentPage={5} totalPages={10} query="react" sort="stars" />,
     );
