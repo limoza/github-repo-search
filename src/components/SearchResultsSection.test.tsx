@@ -105,4 +105,37 @@ describe('SearchResultsSection', () => {
     expect(screen.getByTestId('repo-list')).toBeInTheDocument();
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
+
+  it('ページ番号が範囲外なら最終ページへredirectする', async () => {
+    searchRepositoriesMock.mockResolvedValueOnce({
+      total_count: 25,
+      items: [
+        {
+          id: 1,
+          name: 'react',
+          full_name: 'facebook/react',
+          description: 'desc',
+          stargazers_count: 1,
+          forks_count: 2,
+          updated_at: '2026-03-20T12:00:00Z',
+          owner: {
+            login: 'facebook',
+            avatar_url: 'https://example.com/avatar.png',
+          },
+        },
+      ],
+    });
+
+    await SearchResultsSection({
+      searchState: {
+        q: 'react',
+        page: 999,
+        sort: 'best-match',
+      },
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/?q=react&page=3&sort=best-match',
+    );
+  });
 });
