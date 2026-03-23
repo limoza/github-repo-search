@@ -6,13 +6,15 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import type { SortOption } from '@/features/repository-search/constants';
 import { buildSearchUrl } from '@/lib/buildSearchUrl';
 
 type SearchFormProps = {
   initialQuery: string;
+  currentSort: SortOption;
 };
 
-export const SearchForm = ({ initialQuery }: SearchFormProps) => {
+export const SearchForm = ({ initialQuery, currentSort }: SearchFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -36,6 +38,7 @@ export const SearchForm = ({ initialQuery }: SearchFormProps) => {
       currentSearchParams: searchParams.toString(),
       query: trimmedInputValue,
       page: 1,
+      sort: currentSort,
     });
 
     router.push(nextUrl);

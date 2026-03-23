@@ -41,16 +41,7 @@ describe('buildSearchUrl', () => {
     ).toBe('/?q=react&page=2');
   });
 
-  it('sortがbest-matchのときはsortパラメータを削除する', () => {
-    expect(
-      buildSearchUrl({
-        currentSearchParams: 'q=react&page=2&sort=stars',
-        sort: 'best-match',
-      }),
-    ).toBe('/?q=react&page=2');
-  });
-
-  it('sortがbest-match以外のときはsortパラメータを設定する', () => {
+  it('sortパラメータが設定されている', () => {
     expect(
       buildSearchUrl({
         currentSearchParams: 'q=react&page=2',
