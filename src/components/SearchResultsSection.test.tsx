@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SearchResultsSection } from './SearchResultsSection';
 
@@ -23,6 +23,11 @@ vi.mock('@/components/Pagination', () => ({
 }));
 
 describe('SearchResultsSection', () => {
+  beforeEach(() => {
+    redirectMock.mockReset();
+    searchRepositoriesMock.mockReset();
+  });
+
   it('qが空なら検索案内文を表示する', async () => {
     const result = await SearchResultsSection({
       searchState: {
