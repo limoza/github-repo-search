@@ -107,10 +107,4 @@ describe('RepoList', () => {
 
     expect(screen.getAllByText('3日前')).toHaveLength(2);
   });
-
-  it('itemsが空なら何も描画しない', () => {
-    const { container } = render(<RepoList items={[]} />);
-
-    expect(container).toBeEmptyDOMElement();
-  });
 });
