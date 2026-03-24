@@ -274,11 +274,19 @@ npm install
 
 ### 環境変数
 
-`.env.local`
+リポジトリ直下の `.env.example` を `.env.local` にコピーし、値を設定してください。
+
+```bash
+cp .env.example .env.local
+```
+
+`.env.local` の内容:
 
 ```
-GITHUB_TOKEN=your_token
+GITHUB_TOKEN=your_token_here
 ```
+
+`your_token_here` を実際の GitHub Personal Access Token に置き換えてください。
 
 ---
 
