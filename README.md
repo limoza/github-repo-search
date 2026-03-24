@@ -267,7 +267,7 @@ axeによる検証も実施し、実務レベルのUI品質を満たすことを
 ## ⚙️ セットアップ
 
 ```bash
-git clone https://github.com/your-repo.git
+git clone https://github.com/<your-username>/github-repo-search.git
 cd github-repo-search
 npm install
 ```
