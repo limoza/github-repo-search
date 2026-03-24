@@ -18,36 +18,37 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
   if (!searchState.q) {
     return (
       <section className="space-y-2">
-        <p className="text-sm text-muted-foreground mt-3">
+        <p className="mt-3 text-sm text-muted-foreground">
           キーワードを入力して検索してください。
         </p>
       </section>
     );
   }
 
-  const safePage = Math.min(
-    Math.max(searchState.page, 1),
+  const requestedPage = searchState.page;
+  const currentPage = Math.min(
+    Math.max(requestedPage, 1),
     MAX_SEARCH_RESULT_PAGES,
   );
 
   const repositoriesData: GitHubRepositorySearchResponse =
     await searchRepositories({
       q: searchState.q,
-      page: safePage,
+      page: currentPage,
       perPage: PER_PAGE,
       sort: searchState.sort,
     });
 
   const totalCount = repositoriesData.total_count;
+  const hasResults = totalCount > 0;
   const totalPages = Math.min(
     MAX_SEARCH_RESULT_PAGES,
     Math.ceil(totalCount / PER_PAGE),
   );
 
-  const hasAvailablePages = totalPages > 0;
-  const isPageOutOfRange = searchState.page > totalPages;
+  const isPageOutOfRange = hasResults && requestedPage > totalPages;
 
-  if (hasAvailablePages && isPageOutOfRange) {
+  if (isPageOutOfRange) {
     const redirectUrl = buildSearchUrl({
       currentSearchParams: '',
       query: searchState.q,
@@ -58,23 +59,20 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
     redirect(redirectUrl);
   }
 
-  const startItemNumber = !hasAvailablePages
-    ? 0
-    : (safePage - 1) * PER_PAGE + 1;
-
-  const endItemNumber = !hasAvailablePages
-    ? 0
-    : Math.min(safePage * PER_PAGE, totalCount);
+  const startItemNumber = hasResults ? (currentPage - 1) * PER_PAGE + 1 : 0;
+  const endItemNumber = hasResults
+    ? Math.min(currentPage * PER_PAGE, totalCount)
+    : 0;
 
   return (
-    <section className="space-y-6 mt-3">
+    <section className="mt-3 space-y-6">
       <div className="border-b pb-3">
         <h2 className="text-xl tracking-tight text-foreground">
           <span className="font-bold">{searchState.q}</span>
-          <span className="text-base ml-1">の検索結果</span>
+          <span className="ml-1 text-base">の検索結果</span>
         </h2>
 
-        {hasAvailablePages && (
+        {hasResults && (
           <p className="mt-0.5 text-sm text-muted-foreground">
             {totalCount.toLocaleString()}件中 {startItemNumber}–{endItemNumber}
             件を表示
@@ -82,7 +80,7 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
         )}
       </div>
 
-      {!hasAvailablePages ? (
+      {!hasResults ? (
         <div>
           <p className="font-medium text-foreground">
             該当するリポジトリが見つかりませんでした。
@@ -97,7 +95,7 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
 
           <Pagination
             totalPages={totalPages}
-            currentPage={safePage}
+            currentPage={currentPage}
             query={searchState.q}
             sort={searchState.sort}
           />
