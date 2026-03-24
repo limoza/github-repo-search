@@ -266,6 +266,10 @@ axeによる検証も実施し、実務レベルのUI品質を満たすことを
 
 ## ⚙️ セットアップ
 
+### 前提条件
+
+- **Node.js** `>=20.17`
+
 ```bash
 git clone https://github.com/<your-username>/github-repo-search.git
 cd github-repo-search
