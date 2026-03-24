@@ -1,6 +1,5 @@
 import {
   QUERY_PARAMS,
-  SORT_OPTIONS,
   SortOption,
 } from '@/features/repository-search/constants';
 

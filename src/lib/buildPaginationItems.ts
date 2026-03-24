@@ -1,4 +1,6 @@
-type PaginationItem = { type: 'page'; value: number } | { type: 'ellipsis' };
+export type PaginationItem =
+  | { type: 'page'; value: number }
+  | { type: 'ellipsis' };
 
 type BuildPaginationItemsParams = {
   currentPage: number;
@@ -23,8 +25,7 @@ export const buildPaginationItems = ({
   if (startPage > 1) {
     items.push({ type: 'page', value: 1 });
 
-    const hasGapOnLeft = startPage > 2;
-    if (hasGapOnLeft) {
+    if (startPage > 2) {
       items.push({ type: 'ellipsis' });
     }
   }
@@ -34,8 +35,7 @@ export const buildPaginationItems = ({
   }
 
   if (endPage < totalPages) {
-    const hasGapOnRight = endPage < totalPages - 1;
-    if (hasGapOnRight) {
+    if (endPage < totalPages - 1) {
       items.push({ type: 'ellipsis' });
     }
 
