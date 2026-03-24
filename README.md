@@ -109,6 +109,7 @@ Next.js App Routerをベースに作成しています。
 2. ブラウザに axe DevTools をインストールし、有効化する
 3. 検索画面 / 結果一覧 / 詳細画面を開き、それぞれで axe DevTools の自動検査を実行する
 4. 重大度「minor」以上の問題が検出されないことを確認する
+
 ---
 
 ## 🧪 テスト
@@ -154,37 +155,36 @@ Next.js App Routerをベースに作成しています。
 
 ```mermaid
 flowchart TD
+  User[ユーザー操作]
+  URL["URL (q, page, sort)"]
 
-User[ユーザー操作]
-URL[URL (q, page, sort)]
+  User --> URL
 
-User --> URL
+  URL --> Page[Page (Server Component)]
+  Page --> Normalize[normalizeSearchParams]
 
-URL --> Page[Page (Server Component)]
-Page --> Normalize[normalizeSearchParams]
+  Normalize --> SearchSection[SearchResultsSection]
 
-Normalize --> SearchSection[SearchResultsSection]
+  SearchSection -->|qなし| Empty[Empty State]
+  SearchSection -->|API呼び出し| API[GitHub API]
 
-SearchSection -->|qなし| Empty[Empty State]
-SearchSection -->|API呼び出し| API[GitHub API]
+  API --> Data[Search Result]
 
-API --> Data[Search Result]
+  Data -->|0件| Empty
+  Data -->|あり| RepoList[RepoList]
+  Data --> Pagination[Pagination]
 
-Data -->|0件| Empty
-Data -->|あり| RepoList
-Data --> Pagination
+  RepoList --> RepoItem[Repo Card]
+  RepoItem --> DetailLink["/repos/:owner/:repo"]
 
-RepoList --> RepoItem[Repo Card]
-RepoItem --> DetailLink[/repos/:owner/:repo]
+  DetailLink --> DetailPage[Detail Page (Server Component)]
+  DetailPage --> DetailAPI[GitHub Repo Detail API]
+  DetailAPI --> DetailView[Detail View]
 
-DetailLink --> DetailPage[Detail Page (Server Component)]
-DetailPage --> DetailAPI[GitHub Repo Detail API]
-DetailAPI --> DetailView
+  SearchSection -->|page不正| Redirect[redirect()]
 
-SearchSection -->|page不正| Redirect[redirect()]
-
-DetailPage -->|404| NotFound[not-found.tsx]
-DetailPage -->|通信失敗| Error[error.tsx]
+  DetailPage -->|404| NotFound[not-found.tsx]
+  DetailPage -->|通信失敗| Error[error.tsx]
 ```
 
 ---
