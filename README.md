@@ -160,31 +160,31 @@ flowchart TD
 
   User --> URL
 
-  URL --> Page[Page (Server Component)]
-  Page --> Normalize[normalizeSearchParams]
+  URL --> Page["Page (Server Component)"]
+  Page --> Normalize["normalizeSearchParams"]
 
-  Normalize --> SearchSection[SearchResultsSection]
+  Normalize --> SearchSection["SearchResultsSection"]
 
-  SearchSection -->|qなし| Empty[Empty State]
-  SearchSection -->|API呼び出し| API[GitHub API]
+  SearchSection -->|qなし| Empty["Empty State"]
+  SearchSection -->|API呼び出し| API["GitHub API"]
 
-  API --> Data[Search Result]
+  API --> Data["Search Result"]
 
   Data -->|0件| Empty
-  Data -->|あり| RepoList[RepoList]
-  Data --> Pagination[Pagination]
+  Data -->|あり| RepoList["RepoList"]
+  Data --> Pagination["Pagination"]
 
-  RepoList --> RepoItem[Repo Card]
+  RepoList --> RepoItem["Repo Card"]
   RepoItem --> DetailLink["/repos/:owner/:repo"]
 
-  DetailLink --> DetailPage[Detail Page (Server Component)]
-  DetailPage --> DetailAPI[GitHub Repo Detail API]
-  DetailAPI --> DetailView[Detail View]
+  DetailLink --> DetailPage["Detail Page (Server Component)"]
+  DetailPage --> DetailAPI["GitHub Repo Detail API"]
+  DetailAPI --> DetailView["Detail View"]
 
-  SearchSection -->|page不正| Redirect[redirect()]
+  SearchSection -->|page不正| Redirect["redirect()"]
 
-  DetailPage -->|404| NotFound[not-found.tsx]
-  DetailPage -->|通信失敗| Error[error.tsx]
+  DetailPage -->|404| NotFound["not-found.tsx"]
+  DetailPage -->|通信失敗| Error["error.tsx"]
 ```
 
 ---
