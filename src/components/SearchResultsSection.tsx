@@ -13,6 +13,7 @@ type Props = {
 
 const PER_PAGE = 10;
 const MAX_SEARCH_RESULT_PAGES = 100;
+const MAX_DISPLAYABLE_RESULTS = PER_PAGE * MAX_SEARCH_RESULT_PAGES;
 
 export const SearchResultsSection = async ({ searchState }: Props) => {
   if (!searchState.q) {
@@ -39,12 +40,10 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
       sort: searchState.sort,
     });
 
-  const totalCount = repositoriesData.total_count;
-  const hasResults = totalCount > 0;
-  const totalPages = Math.min(
-    MAX_SEARCH_RESULT_PAGES,
-    Math.ceil(totalCount / PER_PAGE),
-  );
+  const apiTotalCount = repositoriesData.total_count;
+  const displayTotalCount = Math.min(apiTotalCount, MAX_DISPLAYABLE_RESULTS);
+  const hasResults = displayTotalCount > 0;
+  const totalPages = Math.ceil(displayTotalCount / PER_PAGE);
 
   const isPageOutOfRange = hasResults && requestedPage > totalPages;
 
@@ -61,7 +60,7 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
 
   const startItemNumber = hasResults ? (currentPage - 1) * PER_PAGE + 1 : 0;
   const endItemNumber = hasResults
-    ? Math.min(currentPage * PER_PAGE, totalCount)
+    ? Math.min(currentPage * PER_PAGE, displayTotalCount)
     : 0;
 
   return (
@@ -74,8 +73,8 @@ export const SearchResultsSection = async ({ searchState }: Props) => {
 
         {hasResults && (
           <p className="mt-0.5 text-sm text-muted-foreground">
-            {totalCount.toLocaleString()}件中 {startItemNumber}–{endItemNumber}
-            件を表示
+            {displayTotalCount.toLocaleString()}件中 {startItemNumber}–
+            {endItemNumber}件を表示
           </p>
         )}
       </div>

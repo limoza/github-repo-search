@@ -111,6 +111,41 @@ describe('SearchResultsSection', () => {
     expect(screen.getByTestId('pagination')).toBeInTheDocument();
   });
 
+  it('total_countが1000件を超える場合は表示件数を1000件に丸める', async () => {
+    searchRepositoriesMock.mockResolvedValueOnce({
+      total_count: 52342,
+      items: [
+        {
+          id: 1,
+          name: 'react',
+          full_name: 'facebook/react',
+          description: 'desc',
+          stargazers_count: 1,
+          forks_count: 2,
+          updated_at: '2026-03-20T12:00:00Z',
+          owner: {
+            login: 'facebook',
+            avatar_url: 'https://example.com/avatar.png',
+          },
+        },
+      ],
+    });
+
+    const result = await SearchResultsSection({
+      searchState: {
+        q: 'react',
+        page: 100,
+        sort: 'best-match',
+      },
+    });
+
+    render(result);
+
+    expect(screen.getByText(/1,000件中 991–1000件を表示/)).toBeInTheDocument();
+    expect(screen.getByTestId('repo-list')).toBeInTheDocument();
+    expect(screen.getByTestId('pagination')).toBeInTheDocument();
+  });
+
   it('ページ番号が範囲外なら最終ページへredirectする', async () => {
     searchRepositoriesMock.mockResolvedValueOnce({
       total_count: 25,
