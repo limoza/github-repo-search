@@ -35,6 +35,7 @@ describe('searchRepositories', () => {
 
     expect(mockedGithubFetch).toHaveBeenCalledWith(
       '/search/repositories?q=react&page=2&per_page=30',
+      expect.anything(),
     );
   });
 
@@ -61,6 +62,7 @@ describe('searchRepositories', () => {
 
       expect(mockedGithubFetch).toHaveBeenCalledWith(
         `/search/repositories?q=react&page=2&per_page=30&sort=${sortOption}`,
+        expect.anything(),
       );
     },
   );
@@ -122,6 +124,7 @@ describe('getRepositoryDetail', () => {
 
     expect(mockedGithubFetch).toHaveBeenCalledWith(
       '/repos/foo%2Fbar/my%20repo',
+      expect.anything(),
     );
   });
 
