@@ -124,7 +124,9 @@ describe('getRepositoryDetail', () => {
 
     expect(mockedGithubFetch).toHaveBeenCalledWith(
       '/repos/foo%2Fbar/my%20repo',
-      expect.anything(),
+      expect.objectContaining({
+        next: { revalidate: 60 },
+      }),
     );
   });
 
