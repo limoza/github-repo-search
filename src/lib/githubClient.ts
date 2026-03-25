@@ -17,7 +17,6 @@ export const githubFetch = async (
         : {}),
       ...init?.headers,
     },
-    cache: 'no-store',
   });
 
   if (!response.ok && response.status >= 500) {

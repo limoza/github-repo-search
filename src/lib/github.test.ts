@@ -35,6 +35,7 @@ describe('searchRepositories', () => {
 
     expect(mockedGithubFetch).toHaveBeenCalledWith(
       '/search/repositories?q=react&page=2&per_page=30',
+      expect.objectContaining({ cache: 'no-store' }),
     );
   });
 
@@ -61,6 +62,7 @@ describe('searchRepositories', () => {
 
       expect(mockedGithubFetch).toHaveBeenCalledWith(
         `/search/repositories?q=react&page=2&per_page=30&sort=${sortOption}`,
+        expect.objectContaining({ cache: 'no-store' }),
       );
     },
   );
@@ -122,6 +124,9 @@ describe('getRepositoryDetail', () => {
 
     expect(mockedGithubFetch).toHaveBeenCalledWith(
       '/repos/foo%2Fbar/my%20repo',
+      expect.objectContaining({
+        next: { revalidate: 60 },
+      }),
     );
   });
 

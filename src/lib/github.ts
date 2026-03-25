@@ -39,6 +39,9 @@ export const searchRepositories = async ({
 
   const response = await githubFetch(
     `/search/repositories?${params.toString()}`,
+    {
+      cache: 'no-store',
+    },
   );
 
   if (!response.ok) {
@@ -54,7 +57,10 @@ export const getRepositoryDetail = async ({
 }: GetRepositoryDetailParams): Promise<GitHubRepositoryDetail | null> => {
   const encodedOwner = encodeURIComponent(owner);
   const encodedRepo = encodeURIComponent(repo);
-  const response = await githubFetch(`/repos/${encodedOwner}/${encodedRepo}`);
+
+  const response = await githubFetch(`/repos/${encodedOwner}/${encodedRepo}`, {
+    next: { revalidate: 60 },
+  });
 
   if (response.status === 404) {
     return null;
