@@ -35,7 +35,7 @@ describe('searchRepositories', () => {
 
     expect(mockedGithubFetch).toHaveBeenCalledWith(
       '/search/repositories?q=react&page=2&per_page=30',
-      expect.anything(),
+      expect.objectContaining({ cache: 'no-store' }),
     );
   });
 
@@ -62,7 +62,7 @@ describe('searchRepositories', () => {
 
       expect(mockedGithubFetch).toHaveBeenCalledWith(
         `/search/repositories?q=react&page=2&per_page=30&sort=${sortOption}`,
-        expect.anything(),
+        expect.objectContaining({ cache: 'no-store' }),
       );
     },
   );
