@@ -135,6 +135,17 @@ https://github-repo-search-iota.vercel.app/
 
 ---
 
+## ⚡ パフォーマンス
+
+- Server Component主体
+- Client最小化
+- キャッシュ戦略分離
+
+デモ環境で Lighthouse 100点を確認済み  
+※環境や計測タイミングによりスコアは変動します
+
+---
+
 ## 🧪 テスト
 
 - Vitest + Testing Library
